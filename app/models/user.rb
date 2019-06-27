@@ -4,4 +4,6 @@ class User < ApplicationRecord
     has_many :reviews, through: :usergames
     has_many :games, through: :usergames 
     has_many :games, through: :starratings
+
+    has_secure_password
 end
