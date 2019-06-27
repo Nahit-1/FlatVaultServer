@@ -5,4 +5,8 @@ Rails.application.routes.draw do
   resources :starratings
   resources :reviews 
   resources :usergames 
+
+  post '/signin', to: 'users#signin'
+  get '/validate', to: 'users#validate'
+  get '/library', to: 'users#library'
 end
