@@ -1,42 +1,50 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+# Game.create(name: 'Tetris', slug: 'tetris', metacritic: 87, imageurl: 'google.com/images/1', platform: 'GameBoy', genre: 'Puzzle')
 
-Game.create(name: 'Tetris', slug: 'tetris', metacritic: 87, imageurl: 'google.com/images/1', platform: 'GameBoy', genre: 'Puzzle')
+# User.create(username: 'Nahit', email: 'nahit@nahit.com', password_digest: 'test', bio: 'Hello world! my name is Nahit', accountbalance: 279)
 
-User.create(username: 'Nahit', email: 'nahit@nahit.com', password_digest: 'test', bio: 'Hello world! my name is Nahit', accountbalance: 279)
+# Usergame.create(user_id: 1, game_id: 1)
 
-Usergame.create(user_id: 1, game_id: 1)
+# Review.create(content: 'This game is so freaking awesome!!!!11!', usergame_id: 1)
 
-Review.create(content: 'This game is so freaking awesome!!!!11!', usergame_id: 1)
+# Starrating.create(rating: 5, user_id: 1, game_id: 1)
 
-Starrating.create(rating: 5, user_id: 1, game_id: 1)
+require 'rest-client'
 
+# GAME API ENDPOINT
+# data['results'][0] this gets the first game g
+# data['results'][0]['metacritic'] this gets the metacritic score 
+# data['results'][0]['name'] this gets the game name
+# data['results'][0]['slug'] this gets the slug name 
+# data['results'][0]['genres'][0]['name'] this gets the name of first genre classification 
 
+# games[0] and games[1] does get the right games... 
+url = "https://api.rawg.io/api/games?page="
 
+10.times do |number|
+	response = RestClient.get("#{url}#{number + 1}")
+	data = JSON.parse(response)
+    games = data["results"]
+    # byebug
+    games.each do |game|
+		new_game = Game.new(
+            name: game["name"],
+            slug: game["slug"],
+            metacritic: game["metacritic"],
+            imageurl: game["background_image"],
+            platform: game['platforms'][0]['platform']['name'],
+            genre: game["genres"][0]['name']
+        )
+        if !new_game.save
+            puts new_game.errors.full_messages
+        end
+	end
+end
 
-
-
-
-
-#   create_table "starratings", force: :cascade do |t|
-#     t.integer "rating"
-#     t.bigint "user_id"
-#     t.bigint "game_id"
-#     t.index ["game_id"], name: "index_starratings_on_game_id"
-#     t.index ["user_id"], name: "index_starratings_on_user_id"
+# create_table "games", force: :cascade do |t|
+#     t.string "name"
+#     t.string "slug"
+#     t.integer "metacritic"
+#     t.string "imageurl"
+#     t.string "platform"
+#     t.string "genre"
 #   end
-
-
-#   
-
-#   add_foreign_key "reviews", "usergames"
-#   add_foreign_key "starratings", "games"
-#   add_foreign_key "starratings", "users"
-#   add_foreign_key "usergames", "games"
-#   add_foreign_key "usergames", "users"
-# end
