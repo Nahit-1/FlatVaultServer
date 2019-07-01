@@ -9,4 +9,6 @@ Rails.application.routes.draw do
   post '/signin', to: 'users#signin'
   get '/validate', to: 'users#validate'
   get '/library', to: 'users#library'
+
+  get '/games/:id/reviews', to: 'games#reviews'
 end
