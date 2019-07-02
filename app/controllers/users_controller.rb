@@ -17,6 +17,15 @@ class UsersController < ApplicationController
         end
       end
 
+    def signup 
+      user = User.new(username: params[:username], email: params[:email], password: params[:password])
+        if user.save 
+            render json: user
+        else 
+            render json: { error: 'Unable to create new User.' }, status: 400
+        end 
+    end 
+
       def validate
         user = current_user
         # id = request.headers['Authorisation']

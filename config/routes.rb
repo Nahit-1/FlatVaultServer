@@ -7,8 +7,11 @@ Rails.application.routes.draw do
   resources :usergames 
 
   post '/signin', to: 'users#signin'
+  post '/signup', to: 'users#signup'
+  
   get '/validate', to: 'users#validate'
   get '/library', to: 'users#library'
 
   get '/games/:id/reviews', to: 'games#reviews'
+  
 end
