@@ -31,7 +31,7 @@ class UsersController < ApplicationController
         # id = request.headers['Authorisation']
         # user = User.find_by(id: id)
         if user
-          render json: { username: user.username, token: issue_token({ id: user.id }) }
+          render json: { id: user.id, username: user.username, token: issue_token({ id: user.id }) }
         else
           render json: { error: 'User not found.' }, status: 404
         end
