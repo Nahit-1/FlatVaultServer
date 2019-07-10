@@ -1,5 +1,9 @@
 class UsergamesController < ApplicationController
 
+    def index 
+        render json: current_user.games
+    end 
+
     def create 
         usergame = Usergame.new(game_id: params[:game_id], user_id: params[:user_id])
         if usergame.save 
