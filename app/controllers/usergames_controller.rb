@@ -12,5 +12,14 @@ class UsergamesController < ApplicationController
             render json: { error: 'Unable to create usergame.' }, status: 400
         end 
     end 
+
+    def destroy 
+        usergame = Usergame.destroy(usergame_id: params[:usergame_id])
+        if usergame.destroy
+            render json: current_user.games
+        else 
+            render json: { error: 'Unable to remove from library' }, status: 403 
+    end 
+end 
     
 end
